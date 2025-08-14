@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aldi Creative Portfolio</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="aldi-popup-overlay" id="aldiPopupOverlay">
+<div class="aldi-popup-content">
+<div class="aldi-header">
+<h2 class="aldi-title" id="aldiPopupTitle">Portfolio</h2>
+<button class="aldi-close" onclick="aldiClosePopup()" type="button">&times;</button>
+</div>
+<div class="aldi-body">
+<div class="aldi-video-page" id="aldiVideoPage">
+<div class="aldi-detail-header">
+<h1 class="aldi-detail-title" id="aldiClientTitle">Client Videos</h1>
+<p class="aldi-detail-description" id="aldiClientDescription">Client video portfolio</p>
+</div>
+<div class="aldi-videos-grid" id="aldiVideosGrid">
+<div class="aldi-loading">Loading videos...</div>
+</div>
+</div>
+<div class="aldi-photo-page" id="aldiPhotoPage">
+<div class="aldi-photo-grid" id="aldiPhotoGrid">
+<div class="aldi-loading">Loading photos...</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="aldi-lightbox" id="aldiLightbox">
+<div class="aldi-lightbox-content">
+<iframe class="aldi-lightbox-video" id="aldiLightboxVideo" allowfullscreen></iframe>
+<img class="aldi-lightbox-img" id="aldiLightboxImg" alt="Photo">
+<button class="aldi-lightbox-close" onclick="aldiCloseLightbox()" type="button">&times;</button>
+<button class="aldi-nav aldi-prev" onclick="aldiPrevItem()" type="button">&lt;</button>
+<button class="aldi-nav aldi-next" onclick="aldiNextItem()" type="button">&gt;</button>
+</div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
