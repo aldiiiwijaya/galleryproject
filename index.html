@@ -183,8 +183,8 @@ function aldiLoadClientVideos(clientId) {
   aldiCurrentType = 'video'; 
   aldiGetEl('aldiPopupTitle').textContent = client.title; 
   const videosHTML = client.videos.map((video, index) => `
-    <div class="aldi-video-card" onclick="aldiOpenLightbox(${index})" style="animation-delay: ${index * 0.1}s;">
-      <div class="aldi-video-wrapper">
+    <div class="aldi-video-card" style="animation-delay: ${index * 0.1}s;">
+      <div class="aldi-video-wrapper" onclick="aldiOpenLightbox(${index})">
         <iframe src="https://drive.google.com/file/d/${video.id}/preview" allowfullscreen loading="lazy"></iframe>
       </div>
       <div class="aldi-video-title">${video.title}</div>
@@ -237,7 +237,7 @@ function aldiOpenLightbox(index) {
   
   lightbox.classList.add('aldi-active'); 
   if (popupContent) {
-    popupContent.style.filter = 'blur(2px)';
+    popupContent.style.filter = 'blur(5px)';
     popupContent.style.transition = 'filter 0.3s ease';
   }
 }
