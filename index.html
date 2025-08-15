@@ -23,7 +23,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 /* Desktop - 3 columns */
 .aldi-videos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 100%; margin: 0 auto; }
 
-.aldi-photo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 16px; justify-content: center; }
+.aldi-photo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 12px; justify-content: center; }
 .aldi-video-card { background: linear-gradient(145deg, rgba(15, 15, 30, 0.8), rgba(30, 30, 60, 0.6)); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 16px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column; opacity: 0; transform: translateY(20px); animation: cardFadeIn 0.6s ease forwards; cursor: pointer; width: 100%; }
 .aldi-photo-item { width: 120px; height: 120px; border-radius: 12px; overflow: hidden; cursor: pointer; transition: all 0.3s ease; position: relative; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); opacity: 0; transform: translateY(20px); animation: cardFadeIn 0.6s ease forwards; margin: 0 auto; }
 @keyframes cardFadeIn { to { opacity: 1; transform: translateY(0); } }
@@ -52,7 +52,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 /* Tablet - 2 columns */
 @media (max-width: 1024px) and (min-width: 769px) {
   .aldi-videos-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
-  .aldi-photo-grid { grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 14px; }
+  .aldi-photo-grid { grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 10px; }
   .aldi-popup-content { border-radius: 20px; }
   .aldi-popup-overlay { background: transparent; }
 }
@@ -85,7 +85,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
   .aldi-popup-content { width: 100vw; height: 100vh; max-width: 100vw; max-height: 100vh; border-radius: 0; margin: 0; border: none; } 
   .aldi-video-page { padding: 12px; } 
   .aldi-photo-page { padding: 8px; } 
-  .aldi-photo-grid { grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 8px; justify-items: center; } 
+  .aldi-photo-grid { grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); gap: 8px; justify-items: center; } 
   .aldi-photo-item { width: 100%; height: 0; padding-bottom: 100%; border-radius: 6px; } 
   .aldi-video-title { font-size: 12px; } 
   .aldi-lightbox-video { width: 95vw; height: 53.4vw; min-width: 250px; min-height: 141px; } 
