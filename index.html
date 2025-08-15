@@ -259,29 +259,62 @@ function aldiOpenLightbox(index) {
   } 
   lightbox.classList.add('aldi-active'); 
 }
-function aldiCloseLightbox() { const lightbox = aldiGetEl('aldiLightbox'); lightbox.classList.remove('aldi-active'); aldiGetEl('aldiLightboxVideo').src = ''; }
-function aldiNextItem() { 
-  if (aldiCurrentItems.length === 0) return; 
-  aldiCurrentIndex = (aldiCurrentIndex + 1) % aldiCurrentItems.length; 
-  console.log('Next item, new index:', aldiCurrentIndex, 'type:', aldiCurrentType);
-  if (aldiCurrentType === 'video') { 
-    const video = aldiCurrentItems[aldiCurrentIndex]; 
-    aldiGetEl('aldiLightboxVideo').src = `https://drive.google.com/file/d/${video.id}/preview`; 
-  } else { 
-    const img = aldiGetEl('aldiLightboxImg'); 
-    const photoUrl = aldiCurrentItems[aldiCurrentIndex]; 
-    console.log('Loading next photo:', photoUrl);
-    img.style.opacity = '0.5'; 
-    aldiPreloadImage(photoUrl).then(() => { 
-      img.src = photoUrl; 
-      img.style.opacity = '1'; 
-      console.log('Next photo loaded successfully');
-      const nextIndex = (aldiCurrentIndex + 1) % aldiCurrentItems.length; 
-      aldiPreloadImage(aldiCurrentItems[nextIndex]); 
-    }).catch(err => {
-      console.error('Error loading next photo:', err);
-    }); 
-  } 
+// PERBAIKAN KODE POPUP VERCEL - Update bagian function aldiClosePopup()
+
+function aldiClosePopup() { 
+  console.log('🚪 Closing popup...');
+  
+  // Kirim multiple format pesan untuk memastikan parent menerima
+  const messages = [
+    'closePopup',
+    'close',
+    { action: 'closePopup' },
+    { action: 'close' },
+    { type: 'close' }
+  ];
+  
+  messages.forEach(msg => {
+    try {
+      console.log('📤 Sending message to parent:', msg);
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage(msg, '*');
+      }
+      if (window.top && window.top !== window) {
+        window.top.postMessage(msg, '*');
+      }
+    } catch (e) {
+      console.warn('Failed to send message:', e);
+    }
+  });
+  
+  // Backup: Jika masih dalam iframe, coba tutup dengan delay
+  setTimeout(() => {
+    if (window.parent !== window) {
+      try {
+        window.parent.postMessage('FORCE_CLOSE', '*');
+      } catch (e) {
+        console.warn('Force close failed:', e);
+      }
+    }
+  }, 100);
+}
+
+// JUGA TAMBAHKAN listener untuk ESC key di popup
+document.addEventListener('keydown', e => { 
+  if (e.key === 'Escape') {
+    console.log('⌨️ ESC pressed in popup');
+    aldiClosePopup();
+  }
+});
+
+// TAMBAHKAN click handler untuk lightbox close
+if (aldiGetEl('aldiLightbox')) {
+  aldiGetEl('aldiLightbox').addEventListener('click', e => { 
+    if (e.target.id === 'aldiLightbox') {
+      console.log('🖱️ Lightbox background clicked');
+      aldiCloseLightbox();
+    }
+  });
 }
 function aldiPrevItem() { 
   if (aldiCurrentItems.length === 0) return; 
