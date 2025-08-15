@@ -307,13 +307,65 @@ function aldiPrevItem() {
     }); 
   } 
 }
-function aldiClosePopup() { console.log('Closing popup...'); if (window.parent !== window) { window.parent.postMessage({action: 'closePopup'}, '*'); } }
+function aldiClosePopup() { 
+  console.log('Closing popup...'); 
+  if (window.parent !== window) { 
+    window.parent.postMessage({action: 'closePopup'}, '*'); 
+    window.parent.postMessage('closePopup', '*'); 
+  } 
+}
 document.addEventListener('keydown', e => { if (aldiGetEl('aldiLightbox').classList.contains('aldi-active')) { if (e.key === 'Escape') aldiCloseLightbox(); if (e.key === 'ArrowLeft') aldiPrevItem(); if (e.key === 'ArrowRight') aldiNextItem(); } else if (e.key === 'Escape') { aldiClosePopup(); } });
 aldiGetEl('aldiLightbox').addEventListener('touchstart', e => { aldiTouchStartX = e.changedTouches[0].screenX; aldiTouchStartTime = Date.now(); }, {passive: true});
 aldiGetEl('aldiLightbox').addEventListener('touchend', e => { aldiTouchEndX = e.changedTouches[0].screenX; const touchDuration = Date.now() - aldiTouchStartTime; if (touchDuration < 300 && Math.abs(aldiTouchEndX - aldiTouchStartX) > 50) { aldiTouchEndX < aldiTouchStartX - 50 ? aldiNextItem() : aldiTouchEndX > aldiTouchStartX + 50 ? aldiPrevItem() : null; } }, {passive: true});
 aldiGetEl('aldiLightbox').addEventListener('click', e => { if (e.target.id === 'aldiLightbox') aldiCloseLightbox(); });
-window.addEventListener('message', event => { console.log('Received message:', event.data); if (event.data && event.data.action) { const {action, client, type} = event.data; if (action === 'loadContent' && client) { console.log(`Loading ${type} content for client: ${client}`); if (type === 'video' && aldiData.clientVideos[client]) { aldiLoadClientVideos(client); } else if (type === 'photo' && aldiData.portfolios[client]) { aldiLoadPortfolio(client); } else { console.error('Content not found for:', client, type); aldiShowError('Content not found'); } } } });
-window.addEventListener('load', () => { console.log('Page loaded, checking URL parameters...'); const client = aldiGetUrlParam('client'); const type = aldiGetUrlParam('type'); console.log('URL params - client:', client, 'type:', type); if (client && type) { if (type === 'video' && aldiData.clientVideos[client]) { console.log('Loading client videos:', client); aldiLoadClientVideos(client); } else if (type === 'photo' && aldiData.portfolios[client]) { console.log('Loading portfolio photos:', client); aldiLoadPortfolio(client); } else { console.error('Content not found for:', client, type); aldiShowError('Content not found'); } } else { console.log('No valid parameters found, showing default message'); aldiShowError('Please select a portfolio to view'); } });
+window.addEventListener('message', event => { 
+  console.log('Received message:', event.data); 
+  if (event.data && event.data.action) { 
+    const {action, client, type} = event.data; 
+    if (action === 'loadContent' && client) { 
+      console.log(`Loading ${type} content for client: ${client}`); 
+      if (type === 'video' && aldiData.clientVideos[client]) { 
+        aldiLoadClientVideos(client); 
+      } else if (type === 'photo' && aldiData.portfolios[client]) { 
+        aldiLoadPortfolio(client); 
+      } else { 
+        console.error('Content not found for:', client, type); 
+        aldiShowError('Content not found'); 
+      } 
+    } 
+  }
+  // Handle close messages
+  if (event.data === 'closePopup' || (event.data && event.data.action === 'close')) {
+    console.log('Received close message');
+    window.close();
+  }
+});
+window.addEventListener('load', () => { 
+  console.log('Page loaded, checking URL parameters...'); 
+  const client = aldiGetUrlParam('client'); 
+  const type = aldiGetUrlParam('type'); 
+  console.log('URL params - client:', client, 'type:', type); 
+  if (client && type) { 
+    if (type === 'video' && aldiData.clientVideos[client]) { 
+      console.log('Loading client videos:', client); 
+      aldiLoadClientVideos(client); 
+    } else if (type === 'photo' && aldiData.portfolios[client]) { 
+      console.log('Loading portfolio photos:', client); 
+      aldiLoadPortfolio(client); 
+    } else { 
+      console.error('Content not found for:', client, type); 
+      aldiShowError('Content not found'); 
+    } 
+  } else { 
+    console.log('No valid parameters found, showing default message'); 
+    aldiShowError('Please select a portfolio to view'); 
+  }
+  
+  // Send ready message to parent
+  if (window.parent !== window) {
+    window.parent.postMessage({action: 'ready'}, '*');
+  }
+});
 console.log('Portfolio popup script loaded'); console.log('Available clients:', Object.keys(aldiData.clientVideos)); console.log('Available portfolios:', Object.keys(aldiData.portfolios));
 })();
 </script>
